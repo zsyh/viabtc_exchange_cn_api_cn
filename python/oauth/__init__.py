@@ -16,15 +16,15 @@ class RequestClient(object):
         'Accept': 'application/json'
     }
 
-    def __init__(self, api_key, secret_key, headers=dict()):
-        self.api_key = api_key
+    def __init__(self, access_id, secret_key, headers=dict()):
+        self.access_id = access_id
         self.secret_key = secret_key
         self.headers = self.__headers
         self.headers.update(headers)
 
     def set_authorization(self, params):
-        params['api_key'] = self.api_key
-        self.headers['api_key'] = self.api_key
+        params['access_id'] = self.access_id
+        self.headers['access_id'] = self.access_id
         self.headers['AUTHORIZATION'] = get_sign(params, self.secret_key)
 
     def request(self, method, url, params=dict(), data='', json=dict()):
@@ -69,9 +69,9 @@ class FlaskOAuthClient(OAuthClient):
         elif self.request.is_json:
             self._body = self.request.json
 
-        api_key = self.request.headers.get('API_KEY')
-        if api_key:
-            self._body['api_key'] = api_key
+        access_id = self.request.headers.get('ACCESS_ID')
+        if access_id:
+            self._body['access_id'] = access_id
         return self._body
 
     @property
