@@ -9,12 +9,32 @@ from python.oauth import RequestClient
 
 def get_account():
     request_client = RequestClient(
-            access_id='7DA46FDC6137469AA66F7D29020EB588',
+            access_id='E0A298448E7146108C6D555710AFEAC2',
             secret_key='9E4141D8EE9D4C6E9A65BA827441CCB2D05B921CD809A57A'
     )
-    result = request_client.request('GET', 'https://www.viabtc.cn/api/v1/balance/')
+    result = request_client.request('GET', 'https://www.viabtc.com/api/v1/balance/')
     return result
 
+
+def order_limit():
+    request_client = RequestClient(
+            access_id='E0A298448E7146108C6D555710AFEAC2',
+            secret_key='9E4141D8EE9D4C6E9A65BA827441CCB2D05B921CD809A57A'
+    )
+
+    data = {
+            "amount": "0.4199",
+            "price": "2230",
+            "type": "sell",
+            "market": "BCCCNY"
+        }
+
+    result = request_client.request(
+            'POST',
+            'https://www.viabtc.com/api/v1/order/limit',
+            json=data,
+    )
+    return result
 
 if __name__ == '__main__':
     get_account()
