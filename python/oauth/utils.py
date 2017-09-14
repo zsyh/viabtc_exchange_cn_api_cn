@@ -4,6 +4,7 @@
 Created by bu on 2017-05-10
 """
 from __future__ import unicode_literals
+
 import sys
 import datetime
 import decimal
@@ -15,7 +16,7 @@ if PY3:
     unicode_type = str
     bytes_type = bytes
 else:
-    unicode_type = unicode
+    unicode_type = str
     bytes_type = str
 
 
@@ -30,7 +31,7 @@ def get_sign(obj, secret_key):
     # 签名步骤二：在string后加入KEY
     String = "{0}&secret_key={1}".format(String, secret_key)
     # 签名步骤三：MD5加密
-    String = hashlib.md5(String).hexdigest()
+    String = hashlib.md5(String.encode('utf-8')).hexdigest()
     # 签名步骤四：所有字符转为大写
     result_ = String.upper()
     return result_
@@ -38,9 +39,7 @@ def get_sign(obj, secret_key):
 
 def format_biz_query_para_map(para_map):
     """格式化参数，签名过程需要使用"""
-    reload(sys)
-    sys.setdefaultencoding('utf-8')
-    if isinstance(para_map, (str, unicode)):
+    if isinstance(para_map, str):
         return para_map
     paraMap = to_unicode(para_map)
     slist = sorted(paraMap)
@@ -65,10 +64,10 @@ def to_unicode(data, encoding='UTF-8'):
         else:
             # We support 2.6 which lacks dict comprehensions
             if hasattr(data, 'items'):
-                data = data.items()
-            data = dict([(to_unicode(k, encoding), to_unicode(v, encoding)) for k, v in data])
+                data = list(data.items())
+            data = dict([(k, v) for k, v in data])
     if isinstance(data, type_to_str):
         data = str(data)
     if isinstance(data, bytes_type):
-        data = unicode(data, encoding='utf-8')
+        data = str(data, encoding='utf-8')
     return data

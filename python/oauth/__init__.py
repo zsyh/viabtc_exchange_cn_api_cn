@@ -4,10 +4,11 @@
 Created by bu on 2017-05-10
 """
 from __future__ import unicode_literals
+
 import json as complex_json
 import requests
-from utils import verify_sign
-from utils import get_sign
+from .utils import verify_sign
+from .utils import get_sign
 
 
 class RequestClient(object):
